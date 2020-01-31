@@ -1,6 +1,5 @@
 <?php
 
-use App\User;
 use Illuminate\Http\Request;
 
 /*
@@ -28,11 +27,40 @@ Route::middleware('auth:airlock')->group(function(){
     Route::get('/tokens', function(Request $request){
        return $request->user()->tokens; 
     });
+
+
+    # Generate Token
+    Route::post('/token', function(Request $request){
+        $user = $request->user();
+        $ability = $request->has('abilities') ?  $request->input('abilities') : ['*'];
+
+
+        return ['token' => $user->createToken('token-abilities', $ability)->plainTextToken ];
+    });
+
+
+    Route::post('/server-update', function(Request $request){
+        $user = $request->user();
+        if ($user->tokenCan('server:update')) {
+            
+            return "Server Updated";
+        }
+
+        return "No action allowed!";
+    });
+
+    #revoke token
+    Route::delete('/token', function(Request $request){
+        $user = $request->user();
+        $user->tokens->each->delete();
+
+        return "Token revoked!";
+    });
 });
 
 
 
-Route::post('/token', function(Request $request){
+Route::post('/login', function(Request $request){
 
     # validate request
     $request->validate([
@@ -48,6 +76,8 @@ Route::post('/token', function(Request $request){
 
     $user = \Auth::user();
     $token = $user->createToken('api-token');
-    
+
     return ['token' => $token->plainTextToken];
 });
+
+
