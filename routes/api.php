@@ -32,8 +32,22 @@ Route::middleware('auth:airlock')->group(function(){
 
 
 
-Route::post('/token', function(){
-    $user = User::first();
+Route::post('/token', function(Request $request){
+
+    # validate request
+    $request->validate([
+    'email' => 'required|email',
+    'password' => 'required'
+    ]);
+    
+    
+    $credentials = $request->only('email', 'password');
+    if(!\Auth::once($credentials)){
+        return ['error'=>"Invalid username / password"];
+    }
+
+    $user = \Auth::user();
     $token = $user->createToken('api-token');
-    return $token->plainTextToken;
+    
+    return ['token' => $token->plainTextToken];
 });
