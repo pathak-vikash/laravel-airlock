@@ -64,6 +64,13 @@
         </style>
     </head>
     <body>
+
+            <script>
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', 'http://35762ce7.ngrok.io/api/user', true);
+                xhr.withCredentials = true;
+                xhr.send(null);
+            </script>
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
                 <div class="top-right links">

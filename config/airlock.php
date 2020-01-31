@@ -14,7 +14,7 @@ return [
     */
 
     'stateful' => [
-        'localhost',
+        'localhost', '35762ce7.ngrok.io'
     ],
 
     /*
