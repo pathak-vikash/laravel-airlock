@@ -19,6 +19,9 @@ Laravel Airlock provides a featherweight authentication system for SPAs and simp
 
 - Setting database and run migration
 
+    php artisan migrate
+
+- Start application
     php artisan serve
 
 - Implementation examples - follow the routes/api.php file
